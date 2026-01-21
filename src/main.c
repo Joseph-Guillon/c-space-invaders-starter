@@ -14,6 +14,8 @@ int main(void)
     }
 
     bool running = true;
+    bool game_over = false;
+    grille grilledennemis = creergrille(N);
     Uint32 last_ticks = SDL_GetTicks();
 
     Entity player = {
@@ -38,8 +40,8 @@ int main(void)
         SDL_PumpEvents();
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
-        update(&player, &bullet, &bullet_active, dt);
-        render(renderer, &player, &bullet, bullet_active);
+        update(&player, &bullet, &bullet_active, dt, game_over, grilledennemis);
+        render(renderer, &player, &bullet, bullet_active,grilledennemis);
     }
 
     cleanup(window, renderer);

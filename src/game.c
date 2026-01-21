@@ -1,7 +1,48 @@
 #include <SDL2/SDL.h>
 #include "game.h"
 #include <stdio.h>
-
+grille creer_grille(size_t N){
+    grille grilledennemis;
+    grilledennemis.nbre_ennemis= N;
+    grilledennemis.ennemis = malloc(N*sizeof(Entity));
+    grilledennemis.vivant = malloc(N*sizeof(bool));
+    for(size_t i = 0; i<N;i++){
+        grilledennemis.vivant[i]=true;
+    }
+    for(size_t i = 0; i<N;i++){
+        float x;
+        float y;
+        bool nook(float x,float y){
+            for(size_t j = 0,j<i-1,j++){
+                if(fabs(x-grilledennemis.ennemis.x[j])<ENNEMY_WIDTH){
+                    return false;
+                }elseif(fabs(x-grilledennemis.ennemis.y[j])<ENNEMY_HEIGHT){
+                    return false;
+                };
+             };
+             return true
+        };
+        while(nook(x,y)){
+            x = SCREEN_WIDTH*(float)rand()/((float)RAND_MAX);
+            y = SCREEN_HEIGHT*(float)rand()/(2*(float)RAND_MAX);//on reste dans la moitié haute de l'écran
+        }
+        grilledennemis.ennemis[i].x = x;
+        grilledennemis.ennemis[i].y = y;
+        grilledennemis.ennemis[i].vx = 0;
+        grilledennemis.ennemis[i].vy = ENNEMY_SPEED;
+        grilledennemis.ennemis[i].w = ENNEMY_WIDTH;
+        grilledennemis.ennemis[i].x = ENNEMY_HEIGHT;
+    };
+    return grilledennemis;
+}
+void liberegrille(grille grilledennemis){
+    free(grilledennemis.ennemis);
+    free(grilledennemis.vivant);
+}
+void game_over(grille grilledennemis,bool *running){
+    liberegrille(grilledennemis);
+    *running = false;
+}
 bool init(SDL_Window **window, SDL_Renderer **renderer)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -57,24 +98,39 @@ void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bull
     }
 }
 
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt)
-{
-    player->x += player->vx * dt;
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis)
+{if(!*game_over){
+        player->x += player->vx * dt;
 
-    if (player->x < 0)
-        player->x = 0;
-    if (player->x + player->w > SCREEN_WIDTH)
-        player->x = SCREEN_WIDTH - player->w;
+        if (player->x < 0)
+            player->x = 0;
+        if (player->x + player->w > SCREEN_WIDTH)
+            player->x = SCREEN_WIDTH - player->w;
 
-    if (*bullet_active)
-    {
-        bullet->y += bullet->vy * dt;
-        if (bullet->y + bullet->h < 0)
-            *bullet_active = false;
-    }
+        if (*bullet_active)
+        {
+            bullet->y += bullet->vy * dt;
+            if (bullet->y + bullet->h < 0)
+                *bullet_active = false;
+       }
+       for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
+        if(grilledennemis.vivant[i]){
+            grilledennemis.ennemis[i].y +=grilledennemis.ennemis[i].vy *dt;
+            if(grilledennemis.ennemis[i].y + grilledennemis.ennemis[i].h < 0){
+                *game_over = true;
+            }
+            if(*bullet_active&&fabs(grilledennemis.ennemis[i].y-bullet->y)<(bullet->h+grilledennemis.ennemis[i].h)&&fabs(grilledennemis.ennemis[i].x-bullet->x)<bullet->w+grilledennemis.ennemis[i].w){
+                *bullet_active = false;
+                grilledennemis.vivant[i] = false;
+            }
+        }
+       }
+}else{
+    return game_over();
+};
 }
 
-void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active)
+void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis)
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -92,6 +148,16 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
             bullet->w, bullet->h};
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(renderer, &bullet_rect);
+    }
+    for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
+        if(grilledennemis.vivant[i]){
+            Entity ennemi = grilledennemis.ennemi[i];
+            SDL_Rect ennemi_rect = {
+                (int)ennemi.x, (int)ennemi.y,
+                ennemi.w, ennemi.h};
+            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+            SDL_RenderFillRect(renderer, &ennemi_rect);
+        }
     }
 
     SDL_RenderPresent(renderer);
