@@ -1,11 +1,11 @@
 #include <SDL2/SDL.h>
 #include "game.h"
 #include <stdio.h>
-grille creer_grille(size_t N){
+grille creer_grille(size_t n){
     grille grilledennemis;
-    grilledennemis.nbre_ennemis= N;
-    grilledennemis.ennemis = malloc(N*sizeof(Entity));
-    grilledennemis.vivant = malloc(N*sizeof(bool));
+    grilledennemis.nbre_ennemis= n;
+    grilledennemis.ennemis = malloc(n*sizeof(Entity));
+    grilledennemis.vivant = malloc(n*sizeof(bool));
     for(size_t i = 0; i<N;i++){
         grilledennemis.vivant[i]=true;
     }
@@ -13,14 +13,14 @@ grille creer_grille(size_t N){
         float x;
         float y;
         bool nook(float x,float y){
-            for(size_t j = 0,j<i-1,j++){
-                if(fabs(x-grilledennemis.ennemis.x[j])<ENNEMY_WIDTH){
+            for(size_t j = 0;j<i-1;j++){
+                if(fabs(x-grilledennemis.ennemis[j].x)<ENNEMY_WIDTH){
                     return false;
-                }elseif(fabs(x-grilledennemis.ennemis.y[j])<ENNEMY_HEIGHT){
+                }elseif(fabs(x-grilledennemis.ennemis[j].y)<ENNEMY_HEIGHT){
                     return false;
                 };
              };
-             return true
+             return true;
         };
         while(nook(x,y)){
             x = SCREEN_WIDTH*(float)rand()/((float)RAND_MAX);
@@ -98,7 +98,7 @@ void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bull
     }
 }
 
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis)
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *running)
 {if(!*game_over){
         player->x += player->vx * dt;
 
@@ -126,7 +126,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
         }
        }
 }else{
-    return game_over();
+    return gaame_over(grilledennemis,running);
 };
 }
 
@@ -151,7 +151,7 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
     }
     for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
-            Entity ennemi = grilledennemis.ennemi[i];
+            Entity ennemi = grilledennemis.ennemis[i];
             SDL_Rect ennemi_rect = {
                 (int)ennemi.x, (int)ennemi.y,
                 ennemi.w, ennemi.h};

@@ -9,3 +9,8 @@ typedef struct
 } Entity;
 
 #endif
+typedef struct {
+    size_t nbre_ennemis;
+    Entity *ennemis;
+    bool *vivant;
+} grille;
