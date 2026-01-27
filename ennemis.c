@@ -9,7 +9,7 @@ struct grille{
     bool *vivant;
 }
 typedef struct grille grille;
-grille creer_grille(N){
+grille creer_grille(size_t N){
     grille grilledennemis;
     grilledennemis.nbre_ennemis= N;
     grilledennemis.ennemis = malloc(N*sizeof(entity));

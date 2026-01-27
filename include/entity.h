@@ -7,10 +7,10 @@ typedef struct
     float vx, vy;
     int w, h;
 } Entity;
-
-#endif
 typedef struct {
     size_t nbre_ennemis;
     Entity *ennemis;
     bool *vivant;
 } grille;
+#endif
+
