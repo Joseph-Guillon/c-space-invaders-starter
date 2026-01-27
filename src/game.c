@@ -97,8 +97,8 @@ void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bull
     }
 }
 
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *running)
-{if(!*game_over){
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *running){
+    if(!*game_over){
         player->x += player->vx * dt;
 
         if (player->x < 0)
@@ -116,7 +116,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
        for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
             encoredesennemis = true;
-            Entity *ennemi = grilledennemis.ennemi[i]
+            Entity *ennemi = &grilledennemis.ennemis[i];
             ennemi->y +=ennemi->vy *dt;
             ennemi->vy += ENNEMY_ACCELERATION;
             if(ennemi->y + ennemi->h > SCREEN_HEIGHT){
@@ -126,28 +126,37 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
                 *bullet_active = false;
                 grilledennemis.vivant[i] = false;
             }
-            if (//a completer// && !*grilledennemis.ennemy_bullet_active[i])
+            if (!grilledennemis.ennemy_bullet_active[i])//condition a completer pour eviter tir en continu
                {
-                    *grilledennemis.ennemy_bullet_active[i] = true;
-                    Entity *buullet = grilledennemis.ennemy_bullet[i];
+                    grilledennemis.ennemy_bullet_active[i] = true;
+                    Entity *buullet = &grilledennemis.ennemy_bullet[i];
                     buullet->x = ennemi->x + ennemi->w / 2 - BULLET_WIDTH / 2;
                     buullet->y = ennemi->y;
                     buullet->w = BULLET_WIDTH;
                     buullet->h = BULLET_HEIGHT;
                     buullet->vy = BULLET_SPEED;
-                }
-        }
+                };
+            if (grilledennemis.ennemy_bullet_active[i])
+                    {
+                        Entity *buullet = &grilledennemis.ennemy_bullet[i];
+                        buullet->y += buullet->vy * dt;
+                        if (buullet->y + buullet->h > SCREEN_HEIGHT)
+                            grilledennemis.ennemy_bullet_active[i] = false;
+                        if(fabs(player->y-buullet->y)<(buullet->h+player->h)&&fabs(player->x-buullet->x)<buullet->w+player->w){
+                            grilledennemis.ennemy_bullet_active[i] = false;
+                            *game_over = true; //on verra apres por les HP
+                               };        
+                    }
        }
        if(!encoredesennemis){
-        *game_over = true;
+            *game_over = true;//on ne distingue pas vicroitr et defaite
        }
-}else{
-    return gaame_over(grilledennemis,running);
+    }else{
+        return gaame_over(grilledennemis,running);
+    };
 };
-}
 
-void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis)
-{
+void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
