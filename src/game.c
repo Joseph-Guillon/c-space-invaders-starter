@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include "game.h"
+#include "entity.h"
 #include <stdio.h>
 //bool nook(grille grilledennemis, float x,float y, size_t i){
 //            for(size_t j = 0;j<i-1;j++){
@@ -144,17 +145,15 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
                             grilledennemis.ennemy_bullet_active[i] = false;
                         if(fabs(player->y-buullet->y)<(buullet->h+player->h)&&fabs(player->x-buullet->x)<buullet->w+player->w){
                             grilledennemis.ennemy_bullet_active[i] = false;
-                            *game_over = true; //on verra apres por les HP
+                            *game_over = true; //on verra apres pour les HP
                                };        
                     }
        }
        if(!encoredesennemis){
-            *game_over = true;//on ne distingue pas vicroitr et defaite
+            *game_over = true;//on ne distingue pas victoire et defaite
        }
-    }else{
-        return gaame_over(grilledennemis,running);
     };
-};
+}
 
 void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -183,13 +182,19 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
             SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
             SDL_RenderFillRect(renderer, &ennemi_rect);
         }
+        if (grilledennemis.ennemy_bullet_active[i]){
+            SDL_Rect ennemi_bullet_rect = {
+                (int)grilledennemis.ennemy_bullet[i].x, (int)grilledennemis.ennemy_bullet[i].y,
+                grilledennemis.ennemy_bullet[i].w, grilledennemis.ennemy_bullet[i].h};
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_RenderFillRect(renderer, &ennemi_bullet_rect);
+        }
     }
 
     SDL_RenderPresent(renderer);
-}
+};
 
-void cleanup(SDL_Window *window, SDL_Renderer *renderer)
-{
+void cleanup(SDL_Window *window, SDL_Renderer *renderer){
     if (renderer)
         SDL_DestroyRenderer(renderer);
     if (window)
