@@ -7,6 +7,8 @@ typedef struct
     float vx, vy;
     int w, h;
 } Entity;
+
+#endif
 typedef struct {
     size_t nbre_ennemis;
     Entity *ennemis;
@@ -14,5 +16,3 @@ typedef struct {
     bool *ennemy_bullet_active;
     Entity * ennemy_bullet;
 } grille;
-#endif
-

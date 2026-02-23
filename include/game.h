@@ -18,16 +18,16 @@
 
 #define ENNEMY_HEIGHT 20
 #define ENNEMY_WIDTH 50
-#define ENNEMY_SPEED 50.0f
-#define N 3
-#define ENNEMY_ACCELERATION 0.1f
+#define ENNEMY_SPEED -50.0f
+#define N 20
+
 bool init(SDL_Window **window, SDL_Renderer **renderer);
 void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bullet, bool *bullet_active);
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *running);
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis);
 void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis);
 void cleanup(SDL_Window *window, SDL_Renderer *renderer);
 void liberegrille(grille grilledennemis);
 void gaame_over(grille grilledennemis,bool *running);
-grille creer_grille(int n);
-bool nook(grille grilledennemis, float x,float y, size_t i);
+grille creer_grille(size_t n);
+
 #endif
