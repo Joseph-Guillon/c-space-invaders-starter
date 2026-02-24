@@ -146,6 +146,22 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
                 *bullet_active = false;
                 grilledennemis.vivant[i] = false;
             }
+            if (!grilledennemis.ennemy_bullet_active[i])//condition a completer pour eviter tir en continu
+               {
+                    Entity *ennemi = &(grilledennemis.ennemis[i]);
+                    grilledennemis.ennemy_bullet_active[i] = true;
+                    Entity *buullet = &(grilledennemis.ennemy_bullet[i]);
+                    buullet->x = ennemi->x + ennemi->w / 2 - BULLET_WIDTH / 2;
+                    buullet->y = ennemi->y;
+                    buullet->w = BULLET_WIDTH;
+                    buullet->h = BULLET_HEIGHT;
+                    buullet->vy = BULLET_SPEED;
+                }else {
+            Entity buullet = grilledennemis.ennemy_bullet[i];
+            buullet.y += -buullet.vy * dt;
+            if (buullet.y + buullet.h < 0)
+                *grilledennemis.ennemy_bullet_active = false;
+            }
         }
        }
         if(!*encoredesennemis){
