@@ -21,6 +21,7 @@ int main(void)
 
     bool running = true;
     bool game_over = false;
+    bool encoredesennemis = true;
     grille grilledennemis = creer_grille(N);
     Uint32 last_ticks = SDL_GetTicks();
 
@@ -46,10 +47,10 @@ int main(void)
         SDL_PumpEvents();
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
-        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis);
+        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis);
         render(renderer, &player, &bullet, bullet_active,grilledennemis);
         if(game_over){
-            gaame_over(grilledennemis, &running, renderer);
+            gaame_over(grilledennemis, &running, renderer,&encoredesennemis);
         }
     }
     printf("fini");

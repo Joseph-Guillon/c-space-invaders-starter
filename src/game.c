@@ -119,7 +119,7 @@ void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bull
     }
 }
 
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis){
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *encoredesennemis){
     if(!*game_over){
         player->x += player->vx * dt;
 
@@ -134,7 +134,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
             if (bullet->y + bullet->h < 0)
                 *bullet_active = false;
        }
-       bool encoredesennemis = false;
+       encoredesennemis = false;
        for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
             encoredesennemis = true;
@@ -149,7 +149,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
         }
        }
         if(!encoredesennemis){
-            *game_over = true;//on ne distingue pas victoire et defaite
+            *game_over = true;//on ne distingue pas victoire et defaite, pour le moment 
         }
     };
 }
@@ -193,7 +193,7 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
 
 };
 
-void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer){
+void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer, bool *encoredesennemis){
     //la partie logique de la fin de partie
     liberegrille(grilledennemis);
     SDL_Surface* go = SDL_LoadBMP("GameOver.bmp");
@@ -202,11 +202,26 @@ void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer){
     };
     SDL_Texture* gameover_tampon = SDL_CreateTextureFromSurface(renderer,go);
     SDL_FreeSurface(go);
-    SDL_Rect dimensions = {0,0,640,480};
-    SDL_RenderCopy(renderer, gameover_tampon, NULL, &dimensions);
-    SDL_RenderPresent(renderer);
+    SDL_Rect dimensions_gameover = {50,0,640,480};
+    SDL_RenderCopy(renderer, gameover_tampon, NULL, &dimensions_gameover);
+    
+    SDL_Surface* resultat;
+    if(*encoredesennemis){
+        resultat = SDL_LoadBMP("defaite.bmp");
+    }else{
+        resultat = SDL_LoadBMP("victoire.bmp"); 
+    };
+    if(resultat == NULL){
+        SDL_Log("ERREUR>%s\n",SDL_GetError());
+    };
+    SDL_Texture* resultat_tampon = SDL_CreateTextureFromSurface(renderer,resultat);
+    SDL_FreeSurface(resultat);
+    SDL_Rect dimensions_resultat = {50,300,640,200};
+    SDL_RenderCopy(renderer, resultat_tampon, NULL, &dimensions_resultat);   
 
+    SDL_RenderPresent(renderer);
     SDL_DestroyTexture(gameover_tampon);
+    SDL_DestroyTexture(resultat_tampon);
     SLEEP(5000);
     *running = false;
 }
