@@ -24,11 +24,29 @@
 
 bool init(SDL_Window **window, SDL_Renderer **renderer);
 void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bullet, bool *bullet_active);
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *running);
-void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis, bool game_over);
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis);
+void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis);
 void cleanup(SDL_Window *window, SDL_Renderer *renderer);
 void liberegrille(grille grilledennemis);
-void gaame_over(grille grilledennemis,bool *running);
 grille creer_grille(int n);
+void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer);
+
+#ifdef _WIN32
+//  For Windows (32- and 64-bit)
+#   include <windows.h>
+#   define SLEEP(msecs) Sleep(msecs)
+#elif __unix
+//  For linux, OSX, and other unixes
+#   define _POSIX_C_SOURCE 199309L // or greater
+#   include <time.h>
+#   define SLEEP(msecs) do {            \
+        struct timespec ts;             \
+        ts.tv_sec = msecs/1000;         \
+        ts.tv_nsec = msecs%1000*1000;   \
+        nanosleep(&ts, NULL);           \
+        } while (0)
+#else
+#   error "Unknown system"
+#endif
 
 #endif

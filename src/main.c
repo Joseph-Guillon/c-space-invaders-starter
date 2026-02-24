@@ -46,8 +46,11 @@ int main(void)
         SDL_PumpEvents();
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
-        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&running);
-        render(renderer, &player, &bullet, bullet_active,grilledennemis, game_over);
+        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis);
+        render(renderer, &player, &bullet, bullet_active,grilledennemis);
+        if(game_over){
+            gaame_over(grilledennemis, &running, renderer);
+        }
     }
     printf("fini");
     cleanup(window, renderer);
