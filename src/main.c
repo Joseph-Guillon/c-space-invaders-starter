@@ -49,7 +49,7 @@ int main(void)
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
         update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis,&pv);
-        render(renderer, &player, &bullet, bullet_active,grilledennemis);
+        render(renderer, &player, &bullet, bullet_active,grilledennemis,&pv);
         if(game_over){
             gaame_over( &running, renderer,&encoredesennemis);
         }
