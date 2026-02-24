@@ -134,10 +134,10 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
             if (bullet->y + bullet->h < 0)
                 *bullet_active = false;
        }
-       encoredesennemis = false;
+       *encoredesennemis = false;
        for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
-            encoredesennemis = true;
+            *encoredesennemis = true;
             grilledennemis.ennemis[i].y +=grilledennemis.ennemis[i].vy *dt;
             if(grilledennemis.ennemis[i].y + grilledennemis.ennemis[i].h > SCREEN_HEIGHT){
                 *game_over = true;
@@ -148,7 +148,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
             }
         }
        }
-        if(!encoredesennemis){
+        if(!*encoredesennemis){
             *game_over = true;//on ne distingue pas victoire et defaite, pour le moment 
         }
     };
@@ -193,9 +193,9 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
 
 };
 
-void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer, bool *encoredesennemis){
+void gaame_over(bool *running, SDL_Renderer *renderer, bool *encoredesennemis){
     //la partie logique de la fin de partie
-    liberegrille(grilledennemis);
+    
     SDL_Surface* go = SDL_LoadBMP("GameOver.bmp");
     if(go == NULL){
         SDL_Log("ERREUR>%s\n",SDL_GetError());
@@ -226,11 +226,12 @@ void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer, boo
     *running = false;
 }
 
-void cleanup(SDL_Window *window, SDL_Renderer *renderer){//la partie graphique de la fin de partie
+void cleanup(SDL_Window *window, SDL_Renderer *renderer, grille grilledennemis){//la partie gique de la fin de partie
     if (renderer)
         SDL_DestroyRenderer(renderer);
     if (window)
         SDL_DestroyWindow(window);
     SDL_Quit();
+    liberegrille(grilledennemis);
     //TTF_Quit();
 }

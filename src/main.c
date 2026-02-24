@@ -50,10 +50,10 @@ int main(void)
         update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis);
         render(renderer, &player, &bullet, bullet_active,grilledennemis);
         if(game_over){
-            gaame_over(grilledennemis, &running, renderer,&encoredesennemis);
+            gaame_over( &running, renderer,&encoredesennemis);
         }
     }
     printf("fini");
-    cleanup(window, renderer);
+    cleanup(window, renderer, grilledennemis);
     return 0;
 }

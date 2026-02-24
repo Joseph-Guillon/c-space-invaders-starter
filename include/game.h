@@ -26,10 +26,10 @@ bool init(SDL_Window **window, SDL_Renderer **renderer);
 void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bullet, bool *bullet_active);
 void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool* encoredesennemis);
 void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis);
-void cleanup(SDL_Window *window, SDL_Renderer *renderer);
+void cleanup(SDL_Window *window, SDL_Renderer *renderer, grille grilledennemis);
 void liberegrille(grille grilledennemis);
 grille creer_grille(int n);
-void gaame_over(grille grilledennemis,bool *running, SDL_Renderer *renderer, bool *encoredesennemis);
+void gaame_over(bool *running, SDL_Renderer *renderer, bool *encoredesennemis);
 
 #ifdef _WIN32
 //  For Windows (32- and 64-bit)
