@@ -139,6 +139,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
        for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
             *encoredesennemis = true;
+            grilledennemis.ennemis[i].vy += ENNEMY_ACCELERATION*dt;
             grilledennemis.ennemis[i].y +=grilledennemis.ennemis[i].vy *dt;
             if(grilledennemis.ennemis[i].y + grilledennemis.ennemis[i].h > SCREEN_HEIGHT){
                 *game_over = true;
@@ -230,6 +231,7 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
     SDL_Texture* nbre_tampon = SDL_CreateTextureFromSurface(renderer,nbre);
     SDL_FreeSurface(nbre);
     SDL_Rect dimensions_nbre = {650,5,50,50};
+    //SDL_Rect source_nbre = {150,0,150,680};
     SDL_RenderCopy(renderer, nbre_tampon, NULL, &dimensions_nbre);
 
     SDL_RenderPresent(renderer);
