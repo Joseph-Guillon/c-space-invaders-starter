@@ -64,8 +64,9 @@ void liberegrille(grille grilledennemis){
     free(grilledennemis.vivant);
 }
 void game_over(grille grilledennemis,bool *running){
+    SDL_Surface* image = SDL_LoadBMP("image.bmp");
     liberegrille(grilledennemis);
-    *running = false;
+    //*running = false;
 }
 bool init(SDL_Window **window, SDL_Renderer **renderer)
 {
@@ -137,10 +138,12 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
             if (bullet->y + bullet->h < 0)
                 *bullet_active = false;
        }
+       bool encoredesennemis = false;
        for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
+            encoredesennemis = true;
             grilledennemis.ennemis[i].y +=grilledennemis.ennemis[i].vy *dt;
-            if(grilledennemis.ennemis[i].y + grilledennemis.ennemis[i].h < 0){
+            if(grilledennemis.ennemis[i].y + grilledennemis.ennemis[i].h > SCREEN_HEIGHT){
                 *game_over = true;
             }
             if(*bullet_active&&fabs(grilledennemis.ennemis[i].y-bullet->y)<(bullet->h+grilledennemis.ennemis[i].h)&&fabs(grilledennemis.ennemis[i].x-bullet->x)<bullet->w+grilledennemis.ennemis[i].w){
@@ -149,10 +152,13 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
             }
         }
        }
+        if(!encoredesennemis){
+            *game_over = true;//on ne distingue pas victoire et defaite
+        }
     };
 }
 
-void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis){
+void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis, bool game_over){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -187,8 +193,25 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
             SDL_RenderFillRect(renderer, &ennemi_bullet_rect);
         }
     }
+    // if(game_over){
+    //     SDL_Surface* go = SDL_LoadBMP("Game_Over.bmp");
+    //     SDL_Texture* gameover_tampon = SDL_CreateTextureFromSurface(renderer,go);
+    //     SDL_FreeSurface(go);
+    //     SDL_Rect dimensions = {0,0,0,0};
+    //     SDL_QueryTexture(gameover_tampon, NULL, NULL, &dimensions.w, &dimensions.h);
+        
+    //     // on crée la texture définitive avec SDL_TEXTUREACCESS_TARGET
+    //     SDL_Texture texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, dimensions.w, dimensions.h);
+
+    //     SDL_SetRenderTarget(renderer, texture);
+    //     SDL_RenderCopy(renderer, gameover_tampon, NULL, &dimensions);
+    //     SDL_SetRenderTarget(renderer, NULL);
+
+    //     SDL_DestroyTexture(gameover_tampon);
+    // }
 
     SDL_RenderPresent(renderer);
+
 };
 
 void cleanup(SDL_Window *window, SDL_Renderer *renderer){
@@ -197,4 +220,5 @@ void cleanup(SDL_Window *window, SDL_Renderer *renderer){
     if (window)
         SDL_DestroyWindow(window);
     SDL_Quit();
+    //TTF_Quit();
 }

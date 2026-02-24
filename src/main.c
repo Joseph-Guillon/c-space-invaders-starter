@@ -5,6 +5,12 @@
 
 int main(void)
 {
+    // if(TTF_Init()==-1) 
+    // {
+    // printf("TTF_Init: %s\n", TTF_GetError());
+    // exit(2);
+    // }
+    // TTF_Font* vera = TTF_OpenFont("etl24-unicode.bdf",16);
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
 
@@ -41,9 +47,9 @@ int main(void)
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
         update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&running);
-        render(renderer, &player, &bullet, bullet_active,grilledennemis);
+        render(renderer, &player, &bullet, bullet_active,grilledennemis, game_over);
     }
-
+    printf("fini");
     cleanup(window, renderer);
     return 0;
 }
