@@ -13,6 +13,7 @@ int main(void)
     // TTF_Font* vera = TTF_OpenFont("etl24-unicode.bdf",16);
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
+    int pv = VIE;
 
     if (!init(&window, &renderer))
     {
@@ -47,7 +48,7 @@ int main(void)
         SDL_PumpEvents();
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
-        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis);
+        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis,&pv);
         render(renderer, &player, &bullet, bullet_active,grilledennemis);
         if(game_over){
             gaame_over( &running, renderer,&encoredesennemis);

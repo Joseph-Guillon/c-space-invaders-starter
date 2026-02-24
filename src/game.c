@@ -119,7 +119,7 @@ void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bull
     }
 }
 
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *encoredesennemis){
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *encoredesennemis,int *pv){
     if(!*game_over){
         player->x += player->vx * dt;
 
@@ -161,10 +161,14 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
             buullet->y += buullet->vy * dt;
             if (buullet->y + buullet->h > SCREEN_HEIGHT)
                 *grilledennemis.ennemy_bullet_active = false;
+            if(fabs(buullet->y-player->y)<buullet->h+player->h&&fabs(buullet->x-player->x)<buullet->w+player->w){
+                *pv -= 1;
+                grilledennemis.ennemy_bullet_active[i] = false;
+            }
             }
         }
        }
-        if(!*encoredesennemis){
+        if(!*encoredesennemis||*pv == 0){
             *game_over = true;//on ne distingue pas victoire et defaite, pour le moment 
         }
     };
