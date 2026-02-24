@@ -157,9 +157,9 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
                     buullet->h = BULLET_HEIGHT;
                     buullet->vy = BULLET_SPEED;
                 }else {
-            Entity buullet = grilledennemis.ennemy_bullet[i];
-            buullet.y += -buullet.vy * dt;
-            if (buullet.y + buullet.h < 0)
+            Entity *buullet = &(grilledennemis.ennemy_bullet[i]);
+            buullet->y += buullet->vy * dt;
+            if (buullet->y + buullet->h > SCREEN_HEIGHT)
                 *grilledennemis.ennemy_bullet_active = false;
             }
         }
