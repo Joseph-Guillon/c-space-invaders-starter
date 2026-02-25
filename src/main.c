@@ -3,14 +3,7 @@
 #include "entity.h"
 #include "game.h"
 
-int main(void)
-{
-    // if(TTF_Init()==-1) 
-    // {
-    // printf("TTF_Init: %s\n", TTF_GetError());
-    // exit(2);
-    // }
-    // TTF_Font* vera = TTF_OpenFont("etl24-unicode.bdf",16);
+int main(void){
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
     int pv = VIE;

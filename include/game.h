@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include "entity.h"
-//#include <SDL_TTF.h>
+
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600

@@ -2,40 +2,7 @@
 #include "game.h"
 #include "entity.h"
 #include <stdio.h>
-// grille creer_grille(size_t n){
-//     grille grilledennemis;
-//     grilledennemis.nbre_ennemis= n;
-//     grilledennemis.ennemis = malloc(n*sizeof(Entity));
-//     grilledennemis.vivant = malloc(n*sizeof(bool));
-//     for(size_t i = 0; i<N;i++){
-//         grilledennemis.vivant[i]=true;
-//     }
-//     for(size_t i = 0; i<N;i++){
-//         float x;
-//         float y;
-//         bool nook(float x,float y){
-//             for(size_t j = 0;j<i-1;j++){
-//                 if(fabs(x-grilledennemis.ennemis[j].x)<ENNEMY_WIDTH){
-//                     return false;
-//                 }elseif(fabs(y-grilledennemis.ennemis[j].y)<ENNEMY_HEIGHT){
-//                     return false;
-//                 };
-//              };
-//              return true;
-//         };
-//         while(nook(x,y)){
-//             x = SCREEN_WIDTH*(float)rand()/((float)RAND_MAX);
-//             y = SCREEN_HEIGHT*(float)rand()/(2*(float)RAND_MAX);//on reste dans la moitié haute de l'écran
-//         }
-//         grilledennemis.ennemis[i].x = x;
-//         grilledennemis.ennemis[i].y = y;
-//         grilledennemis.ennemis[i].vx = 0;
-//         grilledennemis.ennemis[i].vy = ENNEMY_SPEED;
-//         grilledennemis.ennemis[i].w = ENNEMY_WIDTH;
-//         grilledennemis.ennemis[i].x = ENNEMY_HEIGHT;
-//     };
-//     return grilledennemis;
-//}
+
 char spv[5];
 grille creer_grille(int n){
     grille grilledennemis;
@@ -238,8 +205,7 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
 
 };
 
-void gaame_over(bool *running, SDL_Renderer *renderer, bool *encoredesennemis){
-    //la partie logique de la fin de partie
+void gaame_over(bool *running, SDL_Renderer *renderer, bool *encoredesennemis){//fin de partie
     
     SDL_Surface* go = SDL_LoadBMP("GameOver.bmp");
     if(go == NULL){
@@ -271,12 +237,11 @@ void gaame_over(bool *running, SDL_Renderer *renderer, bool *encoredesennemis){
     *running = false;
 }
 
-void cleanup(SDL_Window *window, SDL_Renderer *renderer, grille grilledennemis){//la partie gique de la fin de partie
+void cleanup(SDL_Window *window, SDL_Renderer *renderer, grille grilledennemis){//liberation de memoire
     if (renderer)
         SDL_DestroyRenderer(renderer);
     if (window)
         SDL_DestroyWindow(window);
     SDL_Quit();
     liberegrille(grilledennemis);
-    //TTF_Quit();
 }
