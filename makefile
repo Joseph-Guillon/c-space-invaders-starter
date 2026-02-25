@@ -1,5 +1,5 @@
 # Compiler & flags
-CC = gcc -fsanitize=address
+CC = gcc 
 CFLAGS = -Wall -Wextra -Iinclude `sdl2-config --cflags` 
 LDFLAGS = `sdl2-config --libs`
 

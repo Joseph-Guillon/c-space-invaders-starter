@@ -120,7 +120,7 @@ void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bull
     }
 }
 
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *encoredesennemis,int *pv, bool *coeur_actif, Entity *coeur){
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool *encoredesennemis,int *pv){
     if(!*game_over){
         player->x += player->vx * dt;
 
@@ -136,17 +136,6 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
                 *bullet_active = false;
        }
 
-       if(!*coeur_actif){
-        bool randombool = (bool)rand() ;
-        if(randombool){
-            *coeur_actif = true;
-            coeur->x = SCREEN_WIDTH*rand()/RAND_MAX;
-        };
-       }else if(fabs(coeur->x-player->x)<coeur->w +player->w){
-            pv += 1;
-       }
-       //printf("%d\n"*coeur_actif);
-
        *encoredesennemis = false;
        for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){
@@ -160,7 +149,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
                 grilledennemis.vivant[i] = false;
                 grilledennemis.ennemy_bullet_active[i]=false;
             }
-            if (!grilledennemis.ennemy_bullet_active[i])//condition a completer pour eviter tir en continu
+            if (!grilledennemis.ennemy_bullet_active[i])
                {
                     Entity *ennemi = &(grilledennemis.ennemis[i]);
                     grilledennemis.ennemy_bullet_active[i] = true;
@@ -188,7 +177,7 @@ void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool 
     };
 }
 
-void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis, int *pv, bool *coeur_actif, Entity *coeur){
+void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis, int *pv){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -206,17 +195,6 @@ void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(renderer, &bullet_rect);
     }
-
-if(*coeur_actif){
-    SDL_Surface* coeur_surface = SDL_LoadBMP("coeur.bmp");
-    if(coeur_surface == NULL){
-        SDL_Log("ERREUR>%s\n",SDL_GetError());
-    };
-    SDL_Texture* coeur_tampon = SDL_CreateTextureFromSurface(renderer,coeur_surface);
-    SDL_FreeSurface(coeur_surface);
-    SDL_Rect dimensions_coeur = {coeur->x,coeur->y,coeur->w,coeur->h};
-    SDL_RenderCopy(renderer, coeur_tampon, NULL, &dimensions_coeur);
-}
 
     for(size_t i = 0;i<grilledennemis.nbre_ennemis;i++){
         if(grilledennemis.vivant[i]){

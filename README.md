@@ -1,4 +1,20 @@
 # Projet final C — Space Invaders (SDL2)
+Il est nécessaire d'avoir installé SDL2 pour jouer à ce jeu.
+
+Pour compiler :
+```shell
+$ make  
+```
+Puis pour exécuter :
+```shell
+$ ./space_invaders 
+```
+Pendant une partie, on peut arrêter le jeu en fermant la fenêtre.
+A la fin de la partie, la fenêtre se ferme automatiquement au bout de 5 sec. Il ne sert à rien d'essayer de fermer la fenêtre pendant ces 5sec.
+
+J'ai essayé de fournir un jeu de niveau 2, et j'ai compris "vitesse progressive" comme des ennemis accélérant lentement. J'ignore si c'est ce qui éait demandé (on aurait aussi pu envisager des vagues successives d'ennemis avançant chacune à vitesse constante mais de plus en plus rapides).
+
+## Voici un rappel de l'énoncé
 
 ## 🎯 Objectif du projet
 
@@ -36,17 +52,7 @@ Le code fourni inclut :
 - le déplacement gauche / droite du joueur au clavier
 - le joueur peut tirer **un** projectile en appuyant sur la touche espace 
 
-Pour compiler le code de base il vous suffit de taper : 
 
-```shell
-$ make 
-$ ./space_invaders 
-```
-
-Avant cela il vous faut installer sdl2. 
-
-- macOS: `brew install sdl2`
-- WSL : `sudo apt install libsdl2-dev`
 
 
 ---
