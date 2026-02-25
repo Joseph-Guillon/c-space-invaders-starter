@@ -20,7 +20,6 @@
 #define ENNEMY_HEIGHT 20
 #define ENNEMY_WIDTH 50
 #define ENNEMY_SPEED -50.0f
-#define ENNEMY_ACCELERATION 1.0f
 #define N 5
 
 #define VIE 5
