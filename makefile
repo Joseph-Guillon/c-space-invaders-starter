@@ -1,6 +1,6 @@
 # Compiler & flags
-CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude `sdl2-config --cflags` -g -O0
+CC = gcc -fsanitize=address
+CFLAGS = -Wall -Wextra -Iinclude `sdl2-config --cflags` 
 LDFLAGS = `sdl2-config --libs`
 
 # Dossiers

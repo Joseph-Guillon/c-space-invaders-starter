@@ -14,7 +14,12 @@ int main(void)
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
     int pv = VIE;
-
+    Entity coeur;
+    coeur.y = SCREEN_HEIGHT;
+    coeur.w = 100;
+    coeur.h = 100;
+    bool coeur_actif = false;
+    
     if (!init(&window, &renderer))
     {
         return 1;
@@ -48,8 +53,8 @@ int main(void)
         SDL_PumpEvents();
         const Uint8 *keys = SDL_GetKeyboardState(NULL);
         handle_input(&running, keys, &player, &bullet, &bullet_active);
-        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis,&pv);
-        render(renderer, &player, &bullet, bullet_active,grilledennemis,&pv);
+        update(&player, &bullet, &bullet_active, dt, &game_over, grilledennemis,&encoredesennemis,&pv, &coeur_actif, &coeur);
+        render(renderer, &player, &bullet, bullet_active,grilledennemis,&pv, &coeur_actif,&coeur);
         if(game_over){
             gaame_over( &running, renderer,&encoredesennemis);
         }

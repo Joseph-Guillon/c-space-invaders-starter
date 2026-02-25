@@ -27,8 +27,8 @@
 
 bool init(SDL_Window **window, SDL_Renderer **renderer);
 void handle_input(bool *running, const Uint8 *keys, Entity *player, Entity *bullet, bool *bullet_active);
-void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool* encoredesennemis, int *pv);
-void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis, int *pv);
+void update(Entity *player, Entity *bullet, bool *bullet_active, float dt, bool *game_over, grille grilledennemis, bool* encoredesennemis, int *pv, bool *coeur_actif, Entity *coeur);
+void render(SDL_Renderer *renderer, Entity *player, Entity *bullet, bool bullet_active, grille grilledennemis, int *pv,bool *coeur_actif, Entity *coeur);
 void cleanup(SDL_Window *window, SDL_Renderer *renderer, grille grilledennemis);
 void liberegrille(grille grilledennemis);
 grille creer_grille(int n);
